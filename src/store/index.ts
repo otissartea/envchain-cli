@@ -1,11 +1,11 @@
-export type { EnvChain, ChainStore } from './chainStore';
 export {
+  ensureStoreDir,
   readStore,
   writeStore,
   getChain,
   saveChain,
   deleteChain,
-  listChains,
-  setActiveChain,
+  listChainNames,
   getActiveChain,
+  setActiveChain,
 } from './chainStore';
