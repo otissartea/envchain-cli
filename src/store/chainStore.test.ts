@@ -9,6 +9,7 @@ const STORE_FILE = path.join(STORE_DIR, 'store.json');
 describe('chainStore', () => {
   beforeEach(() => {
     if (fs.existsSync(STORE_FILE)) fs.unlinkSync(STORE_FILE);
+    vi.resetModules();
   });
 
   afterEach(() => {
@@ -70,5 +71,15 @@ describe('chainStore', () => {
     const chains = listChains();
     expect(chains.map(c => c.name)).toContain('a');
     expect(chains.map(c => c.name)).toContain('b');
+  });
+
+  it('saveChain overwrites an existing chain with the same name', async () => {
+    const { saveChain, getChain } = await import('./chainStore');
+    const original = { name: 'dev', vars: { API_KEY: 'old' }, createdAt: '', updatedAt: '' };
+    const updated = { name: 'dev', vars: { API_KEY: 'new' }, createdAt: '', updatedAt: '' };
+    saveChain(original);
+    saveChain(updated);
+    const retrieved = getChain('dev');
+    expect(retrieved?.vars.API_KEY).toBe('new');
   });
 });
