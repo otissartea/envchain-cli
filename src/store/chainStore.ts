@@ -29,7 +29,11 @@ export function readStore(): ChainStore {
     return { chains: {}, activeChain: null };
   }
   const raw = fs.readFileSync(STORE_FILE, 'utf-8');
-  return JSON.parse(raw) as ChainStore;
+  try {
+    return JSON.parse(raw) as ChainStore;
+  } catch {
+    throw new Error(`Failed to parse store file at ${STORE_FILE}: file may be corrupted`);
+  }
 }
 
 export function writeStore(store: ChainStore): void {
@@ -64,6 +68,9 @@ export function listChains(): EnvChain[] {
 
 export function setActiveChain(name: string | null): void {
   const store = readStore();
+  if (name !== null && !store.chains[name]) {
+    throw new Error(`Chain "${name}" does not exist`);
+  }
   store.activeChain = name;
   writeStore(store);
 }
