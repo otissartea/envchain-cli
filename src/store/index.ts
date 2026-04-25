@@ -6,6 +6,5 @@ export {
   saveChain,
   deleteChain,
   listChainNames,
-  getActiveChain,
-  setActiveChain,
+  renameChain,
 } from './chainStore';
