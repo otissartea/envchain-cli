@@ -27,6 +27,12 @@ describe('isValidKey', () => {
     expect(isValidKey('MY-VAR')).toBe(false);
     expect(isValidKey('')).toBe(false);
   });
+
+  it('rejects keys with spaces or special characters', () => {
+    expect(isValidKey('MY VAR')).toBe(false);
+    expect(isValidKey('MY.VAR')).toBe(false);
+    expect(isValidKey('MY@VAR')).toBe(false);
+  });
 });
 
 describe('addEnvVar', () => {
@@ -69,5 +75,13 @@ describe('addEnvVar', () => {
     await expect(
       addEnvVar({ chain: 'dev', key: '123BAD', value: 'val' })
     ).rejects.toThrow('Invalid environment variable name');
+  });
+
+  it('does not call saveChain when key is invalid', async () => {
+    mockGetChain.mockResolvedValue(null);
+    await expect(
+      addEnvVar({ chain: 'dev', key: 'BAD-KEY', value: 'val' })
+    ).rejects.toThrow();
+    expect(mockSaveChain).not.toHaveBeenCalled();
   });
 });
