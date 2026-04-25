@@ -42,6 +42,14 @@ export function listChains(options: ListOptions = {}): void {
   }
 }
 
+/**
+ * Masks a secret value for display, revealing only the first 2 and last 2
+ * characters. Short values (4 chars or fewer) are fully masked.
+ *
+ * @example
+ * maskValue('mysecretkey') // => 'my******ey'
+ * maskValue('abc')         // => '****'
+ */
 function maskValue(value: string): string {
   if (value.length <= 4) return '****';
   return value.slice(0, 2) + '*'.repeat(Math.min(value.length - 4, 6)) + value.slice(-2);
