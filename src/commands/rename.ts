@@ -1,5 +1,10 @@
 import { getChain, saveChain, deleteChain, listChainNames } from '../store';
 
+/**
+ * Renames an existing chain from `oldName` to `newName`.
+ * Throws if either name is missing, names are identical, the new name is invalid,
+ * the old chain does not exist, or a chain with the new name already exists.
+ */
 export async function renameChain(
   oldName: string,
   newName: string
@@ -32,6 +37,10 @@ export async function renameChain(
   await deleteChain(oldName);
 }
 
+/**
+ * Returns true if the given name contains only letters, numbers,
+ * hyphens, and underscores, and is non-empty.
+ */
 export function isValidChainName(name: string): boolean {
   return /^[a-zA-Z0-9_-]+$/.test(name);
 }
