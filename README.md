@@ -19,6 +19,9 @@ envchain create myapp-dev --set API_URL=https://dev.api.example.com --set DEBUG=
 # List all saved chains
 envchain list
 
+# Show all variables in a specific chain
+envchain show myapp-dev
+
 # Activate a chain (exports vars into your current shell session)
 envchain use myapp-dev
 
